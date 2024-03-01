@@ -1,7 +1,9 @@
-﻿namespace AirportSystem.Data.IRepositories;
+﻿using AirportSystem.Domain.Entities.Employee;
+
+namespace AirportSystem.Data.IRepositories;
 
 public interface IEmployeeRepository
 {
-    //public IEnumerable<Employees> GetAllAsync();
-    //public Task<Employees> InsertAsync(Employees employee);
+    public IEnumerable<Employees> GetAllAsync();
+    public Task<Employees> InsertAsync(Employees employee);
 }
