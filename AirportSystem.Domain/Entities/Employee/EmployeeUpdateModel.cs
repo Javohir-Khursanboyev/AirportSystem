@@ -1,9 +1,8 @@
-﻿using AirportSystem.Domain.Commons;
-using AirportSystem.Domain.Enums;
+﻿using AirportSystem.Domain.Enums;
 
 namespace AirportSystem.Domain.Entities.Employee;
 
-public class Employees : Auditable
+public class EmployeeUpdateModel
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -14,4 +13,3 @@ public class Employees : Auditable
     public string Address { get; set; }
     public EmployeeType EmployeeType { get; set; }
 }
- 
