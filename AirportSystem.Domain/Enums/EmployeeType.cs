@@ -1,4 +1,5 @@
 ﻿namespace AirportSystem.Domain.Enums;
-public enum FlightStatus
+
+public enum EmployeeType
 {
-}   
+}
