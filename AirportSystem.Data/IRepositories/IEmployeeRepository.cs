@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace AirportSystem.Data.IRepositories;
 
-namespace AirportSystem.Data.IRepositories
+public interface IEmployeeRepository
 {
-    internal class IEmployeeRepository
-    {
-    }
+    //public IEnumerable<Employees> GetAllAsync();
+    //public Task<Employees> InsertAsync(Employees employee);
 }
