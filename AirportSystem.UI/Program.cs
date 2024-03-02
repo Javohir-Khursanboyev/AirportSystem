@@ -1,10 +1,11 @@
 ﻿using AirportSystem.Data.Repositories;
+using AirportSystem.Domain.Entities.Customer;
 using AirportSystem.Domain.Entities.Employee;
 using AirportSystem.Domain.Enums;
 using AirportSystem.Service.Services;
 
-var employeeRepository=new EmployeeRepository();
-var model = new EmployeeUpdateModel()
+var customerRepository = new CustomerRepository();
+var model = new CustomerCreationModel()
 {
     FirstName = "Javohir",
     LastName = "Xursanboyev",
@@ -12,9 +13,7 @@ var model = new EmployeeUpdateModel()
     PhoneNumber = "+998979898188",
     DateOfBirth = DateTime.Now,
     Email = "JavohirInfo@gmail.com",
-    Address = "Andijon",
-    EmployeeType = EmployeeType.Passenger
 };
-var employeeService = new EmployeeService(employeeRepository);
-var result = await employeeService.UpdateAsync(3,model);
+var employeeService = new CustomerService(customerRepository);
+var result = await employeeService.DepositAsync(1,1000);
 Console.WriteLine(result);
