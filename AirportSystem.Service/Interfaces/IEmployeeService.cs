@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AirportSystem.Domain.Entities.Employee;
 
-namespace AirportSystem.Service.Interfaces
+namespace AirportSystem.Service.Interfaces;
+
+public interface IEmployeeService
 {
-    internal class IEmployeeService
-    {
-    }
+    Task<EmployeeViewModel> CreateAsync (EmployeeCreationModel model);
+    Task<EmployeeViewModel> UpdateAsync (long id ,EmployeeUpdateModel model ,bool isUsesDeleted);
+    Task<IEnumerable<EmployeeViewModel>> GetAllAsync ();
+    Task<EmployeeViewModel> GetByIdAsync (long  id);
+    Task<bool> DeleteAsync (long id);
 }
