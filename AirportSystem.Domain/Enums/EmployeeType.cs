@@ -2,4 +2,5 @@
 
 public enum EmployeeType
 {
+    Passenger
 }

@@ -2,7 +2,7 @@
 
 namespace AirportSystem.Domain.Entities.Employee;
 
-public class EmployeesCreationModel
+public class EmployeeCreationModel
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
