@@ -2,15 +2,20 @@
 using AirportSystem.Domain.Entities.Aircraft;
 using AirportSystem.Domain.Entities.Customer;
 using AirportSystem.Domain.Entities.Employee;
+using AirportSystem.Domain.Entities.Flight;
 using AirportSystem.Domain.Enums;
 using AirportSystem.Service.Services;
 
-var customerRepository = new AircraftRepository();
-var model = new AircraftUpdateModel()
+var customerRepository = new FlightRepository();
+var model = new FlightUpdateModel()
 {
-   Name = "Air Faly bshbcneb 900",
-   TotalNumberOfSeats = 100,
+   AircraftId = 1,
+   PlaceOfDeparture = "Toshkent",
+   PlaceOfArrival = "Samarqand",
+   DepartureTime = DateTime.Now,
+   ArrivalTime = DateTime.Now,
+   FlightStatus = FlightStatus.OnTime
 };
-var employeeService = new AircraftService(customerRepository);
-var result = await employeeService.UpdateAsync(1,model);
+var employeeService = new FlightService(customerRepository);
+var result = await employeeService.UpdateAsync(2,model);
 Console.WriteLine(result);
