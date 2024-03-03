@@ -11,4 +11,5 @@ public interface ICustomerService
     Task<CustomerViewModel> GetByIdAsync(long id);
     Task<bool> DeleteAsync(long id);
     Task<CustomerViewModel> DepositAsync(long id , decimal amount);
+    Task<CustomerViewModel> SecurityCheckAsync(string email , string password);
 }

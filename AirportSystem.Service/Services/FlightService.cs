@@ -29,6 +29,9 @@ public class FlightService : IFlightService
 
             throw new Exception($"This flight is already exist");
         }
+        if(model.PlaceOfDeparture == model.PlaceOfArrival)
+            throw new Exception($"The place of arrival and departure is the same");
+
         var createdFlight = await flightRepository.InsertAsync(model.MapTo<Flights>());
         return createdFlight.MapTo<FlightViewModel> ();
     }
