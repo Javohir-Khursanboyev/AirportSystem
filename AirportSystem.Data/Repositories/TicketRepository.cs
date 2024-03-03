@@ -97,6 +97,7 @@ public class TicketRepository : ITicketRepository
                            ticket_number = @TicketNumber,
                            ticket_class = @TicketClass,
                            price = @Price,
+                           is_sold = @IsSold,
                            updated_at = @UpdatedAt,
                            is_deleted = @IsDeleted
                        WHERE id = @Id ;";
@@ -107,6 +108,7 @@ public class TicketRepository : ITicketRepository
                 cmd.Parameters.AddWithValue("@TicketNumber", ticket.TicketNumber);
                 cmd.Parameters.AddWithValue("@TicketClass", ticket.TicketClass.ToString());
                 cmd.Parameters.AddWithValue("@Price", ticket.Price);
+                cmd.Parameters.AddWithValue("@IsSold", ticket.IsSold);
                 cmd.Parameters.AddWithValue("@UpdatedAt", DateTime.UtcNow);
                 cmd.Parameters.AddWithValue("@IsDeleted", false);
                 cmd.Parameters.AddWithValue("@Id", id);
