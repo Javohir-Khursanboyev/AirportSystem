@@ -9,4 +9,5 @@ public class TicketViewModel
     public int TicketNumber { get; set; }
     public TicketClass TicketClass { get; set; }
     public decimal Price { get; set; }
+    public bool IsSold { get; set; }
 }

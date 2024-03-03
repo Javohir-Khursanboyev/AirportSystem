@@ -53,8 +53,9 @@ public class CustomerRepository : ICustomerRepository
                 Email = reader.GetString(4),
                 PhoneNumber = reader.GetString(5),
                 DateOfBirth = reader.GetDateTime(6),
-                Balance = reader.GetDecimal(7),
-                IsDeleted = reader.GetBoolean(11)
+                Password = reader.GetString(7),
+                Balance = reader.GetDecimal(8),
+                IsDeleted = reader.GetBoolean(12)
             };
             customersList.Add(customer);
         }
@@ -67,8 +68,8 @@ public class CustomerRepository : ICustomerRepository
         using NpgsqlConnection con = new NpgsqlConnection(connectionString);
         await con.OpenAsync();
 
-        string sql = "INSERT INTO customers (first_name,last_name,passport_number,phone_number,email,date_of_birth,balance,created_at) " +
-            "VALUES (@FirstName,@LastName,@PassportNumber,@PhoneNumber,@Email,@DateOfBirth,@Balance,@CreatedAt) RETURNING id;";
+        string sql = "INSERT INTO customers (first_name,last_name,passport_number,phone_number,email,date_of_birth,password,balance,created_at) " +
+            "VALUES (@FirstName,@LastName,@PassportNumber,@PhoneNumber,@Email,@DateOfBirth,@Password,@Balance,@CreatedAt) RETURNING id;";
 
 
         using NpgsqlCommand cmd = new NpgsqlCommand(sql, con);
@@ -78,6 +79,7 @@ public class CustomerRepository : ICustomerRepository
         cmd.Parameters.AddWithValue("@PhoneNumber", customer.PhoneNumber);
         cmd.Parameters.AddWithValue("@Email", customer.Email);
         cmd.Parameters.AddWithValue("@DateOfBirth", customer.DateOfBirth);
+        cmd.Parameters.AddWithValue("@Password", customer.Password);
         cmd.Parameters.AddWithValue("@Balance", customer.Balance);
         cmd.Parameters.AddWithValue("@CreatedAt", DateTime.UtcNow);
 
@@ -104,6 +106,7 @@ public class CustomerRepository : ICustomerRepository
                            phone_number = @PhoneNumber,
                            email = @Email,
                            date_of_birth = @DateOfBirth,
+                           password = @Password,
                            balance = @Balance,
                            updated_at = @UpdatedAt,
                            is_deleted = @IsDeleted
@@ -117,6 +120,7 @@ public class CustomerRepository : ICustomerRepository
                 cmd.Parameters.AddWithValue("@PhoneNumber", customer.PhoneNumber);
                 cmd.Parameters.AddWithValue("@Email", customer.Email);
                 cmd.Parameters.AddWithValue("@DateOfBirth", customer.DateOfBirth);
+                cmd.Parameters.AddWithValue("@Password", customer.Password);
                 cmd.Parameters.AddWithValue("@Balance", customer.Balance);
                 cmd.Parameters.AddWithValue("@UpdatedAt", DateTime.UtcNow);
                 cmd.Parameters.AddWithValue("@IsDeleted", false);
