@@ -10,12 +10,25 @@ namespace AirportSystem.Service.Services;
 public class FlightService : IFlightService
 {
     private readonly FlightRepository flightRepository;
-    public FlightService(FlightRepository flightRepository)
+    private readonly AircraftService aircraftService;
+    public FlightService(FlightRepository flightRepository, AircraftService aircraftService)
     {
         this.flightRepository = flightRepository;
+        this.aircraftService = aircraftService;
     }
     public async Task<FlightViewModel> CreateAsync(FlightCreationModel model)
     {
+        var existAircraft = await aircraftService.GetByIdAsync(model.AircraftId);
+
+        var flights = await flightRepository.GetAllAsync();
+        var existFlight = flights.FirstOrDefault(f => f.AircraftId == model.AircraftId && f.DepartureTime == model.DepartureTime);
+        if (existFlight != null)
+        {
+            if(existFlight.IsDeleted)
+                await UpdateAsync(existFlight.Id, model.MapTo<FlightUpdateModel> (), true);
+
+            throw new Exception($"This flight is already exist");
+        }
         var createdFlight = await flightRepository.InsertAsync(model.MapTo<Flights>());
         return createdFlight.MapTo<FlightViewModel> ();
     }
@@ -47,6 +60,8 @@ public class FlightService : IFlightService
 
     public async Task<FlightViewModel> UpdateAsync(long id, FlightUpdateModel model, bool isUsesDeleted = false)
     {
+        var existAircraft = await aircraftService.GetByIdAsync(model.AircraftId);
+
         var flights = await flightRepository.GetAllAsync();
         var existFlight = new Flights();
         if (isUsesDeleted)
