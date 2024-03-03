@@ -60,7 +60,7 @@ public class FlightEmployeeService : IFlightEmployeeService
         return existFlightEmployee.MapTo<FlightEmployeeViewModel> ();
     }
 
-    public async Task<FlightEmployeeViewModel> UpdateAsync(long id, FlightEmployeeUpdateModel model, bool isUsesDeleted)
+    public async Task<FlightEmployeeViewModel> UpdateAsync(long id, FlightEmployeeUpdateModel model, bool isUsesDeleted = false)
     {
         var existFlight = await flightService.GetByIdAsync(model.FlightId);
         var existEmployee = await employeeService.GetByIdAsync(model.EmployeeId);

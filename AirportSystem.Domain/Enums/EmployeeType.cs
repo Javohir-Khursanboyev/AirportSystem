@@ -2,5 +2,9 @@
 
 public enum EmployeeType
 {
-    Passenger
+    Pilot,
+    FlightAttendant,
+    AircraftMechanic,
+    AviationEngineer,
+    Dispatcher
 }
