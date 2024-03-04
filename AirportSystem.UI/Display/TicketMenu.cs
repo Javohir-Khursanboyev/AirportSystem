@@ -1,27 +1,26 @@
 ﻿using AirportSystem.Domain.Entities.Flight;
-using AirportSystem.Domain.Entities.FlightEmployee;
+using AirportSystem.Domain.Entities.Ticket;
+using AirportSystem.Domain.Enums;
 using AirportSystem.Service.Services;
 using Spectre.Console;
 
 namespace AirportSystem.UI.Display;
 
-public class FlightEmployeesMenu
+public class TicketMenu
 {
-    private readonly FlightEmployeeService flightEmployeeService;
+    private readonly TicketService ticketService;
     private readonly FlightService flightService;
-    private readonly EmployeeService employeeService;
-    public FlightEmployeesMenu(FlightEmployeeService flightEmployeeService, FlightService flightService, EmployeeService employeeService)
+    public TicketMenu(TicketService ticketService, FlightService flightService)
     {
-        this.flightEmployeeService = flightEmployeeService;
+        this.ticketService = ticketService;
         this.flightService = flightService;
-        this.employeeService = employeeService;
     }
     public async Task DisplayAsync()
     {
         bool circle = true;
 
         var options = new string[] { "Create", "GetById", "Update", "Delete", "GetAll", "[red]Back[/]" };
-        var title = "-- FlightEmployees --";
+        var title = "-- TicketMenu --";
 
         while (circle)
         {
@@ -55,25 +54,38 @@ public class FlightEmployeesMenu
     {
         Console.Clear();
         var flights = await flightService.GetAllAsync();
-        var employees = await employeeService.GetAllAsync();
-
         var flight = Selection.SelectionMenu2("Flights", flights.Select(f => $"{f.Id} {f.PlaceOfDeparture} -> {f.PlaceOfArrival} Time : {f.DepartureTime}").ToArray());
-        var employee = Selection.SelectionMenu2("Employees", employees.Select(e => $"{e.Id} {e.FirstName} {e.LastName} {e.EmployeeType}").ToArray());
-        
-        var flightId = Convert.ToInt64(flight.Split()[0]);
-        var employeeId = Convert.ToInt64(employee.Split()[0]);
-
-        FlightEmployeeCreationModel flightEmployee = new()
+        int ticketNumber = AnsiConsole.Ask<int>("Enter ticket number : ");
+        while (ticketNumber <= 0)
         {
-           FlightId = flightId,
-           EmployeeId = employeeId,
+            AnsiConsole.MarkupLine("[red]Was entered in the wrong format .Try again![/]");
+            ticketNumber = AnsiConsole.Ask<int>("Enter ticket number : ");
+        }
+
+        var options = new string[] { "Economy", "Premium", "Business" };
+        var ticketClass = Selection.SelectionMenu2("TicketClass", options);
+        var flightId = Convert.ToInt64(flight.Split()[0]);
+
+        int price = AnsiConsole.Ask<int>("Enter ticket price : ");
+        while (price <= 0)
+        {
+            AnsiConsole.MarkupLine("[red]Was entered in the wrong format .Try again![/]");
+            price = AnsiConsole.Ask<int>("Enter ticket price : ");
+        }
+
+        TicketCreationModel ticket = new()
+        {
+            FlightId = flightId,
+            TicketNumber = ticketNumber,
+            TicketClass = (TicketClass)Enum.Parse(typeof(TicketClass), ticketClass),
+            Price = price
         };
         try
         {
-            var addedFlightEmployee = await flightEmployeeService.CreateAsync(flightEmployee);
+            var addedTicket = await ticketService.CreateAsync(ticket);
             AnsiConsole.Markup("[orange3]Succesful created[/]\n");
 
-            var table = Selection.DataTable("FlightEmployee", addedFlightEmployee);
+            var table = Selection.DataTable("Ticket", addedTicket);
             AnsiConsole.Write(table);
         }
         catch (Exception ex)
@@ -95,25 +107,39 @@ public class FlightEmployeesMenu
             id = AnsiConsole.Ask<long>("Enter flight Id to update: ");
         }
         var flights = await flightService.GetAllAsync();
-        var employees = await employeeService.GetAllAsync();
-
         var flight = Selection.SelectionMenu2("Flights", flights.Select(f => $"{f.Id} {f.PlaceOfDeparture} -> {f.PlaceOfArrival} Time : {f.DepartureTime}").ToArray());
-        var employee = Selection.SelectionMenu2("Employees", employees.Select(e => $"{e.Id} {e.FirstName} {e.LastName} {e.EmployeeType}").ToArray());
+        int ticketNumber = AnsiConsole.Ask<int>("Enter ticket number : ");
+        while (ticketNumber <= 0)
+        {
+            AnsiConsole.MarkupLine("[red]Was entered in the wrong format .Try again![/]");
+            ticketNumber = AnsiConsole.Ask<int>("Enter ticket number : ");
+        }
 
+        var options = new string[] { "Economy", "Premium", "Business" };
+        var ticketClass = Selection.SelectionMenu2("TicketClass", options);
         var flightId = Convert.ToInt64(flight.Split()[0]);
-        var employeeId = Convert.ToInt64(employee.Split()[0]);
 
-        FlightEmployeeUpdateModel flightEmployee = new()
+        int price = AnsiConsole.Ask<int>("Enter ticket price : ");
+        while (price <= 0)
+        {
+            AnsiConsole.MarkupLine("[red]Was entered in the wrong format .Try again![/]");
+            price = AnsiConsole.Ask<int>("Enter ticket price : ");
+        }
+
+        TicketUpdateModel ticket = new()
         {
             FlightId = flightId,
-            EmployeeId = employeeId,
+            TicketNumber = ticketNumber,
+            TicketClass = (TicketClass)Enum.Parse(typeof(TicketClass), ticketClass),
+            Price = price
         };
+
         try
         {
-            var updatedFlightEmployee = await flightEmployeeService.UpdateAsync(id, flightEmployee);
+            var updatedTicket = await ticketService.UpdateAsync(id, ticket);
             AnsiConsole.Markup("[orange3]Succesful updated[/]\n");
 
-            var table = Selection.DataTable("FlightEmployee", updatedFlightEmployee);
+            var table = Selection.DataTable("Ticket", updatedTicket);
             AnsiConsole.Write(table);
         }
         catch (Exception ex)
@@ -128,17 +154,17 @@ public class FlightEmployeesMenu
     async Task GetByIdAsync()
     {
         Console.Clear();
-        long id = AnsiConsole.Ask<long>("Enter FlightEmployee Id: ");
+        long id = AnsiConsole.Ask<long>("Enter ticket Id: ");
         while (id <= 0)
         {
             AnsiConsole.MarkupLine("[red]Was entered in the wrong format .Try again![/]");
-            id = AnsiConsole.Ask<long>("Enter FlightEmployee Id: ");
+            id = AnsiConsole.Ask<long>("Enter ticket Id: ");
         }
 
         try
         {
-            var flightEmployee = await flightEmployeeService.GetByIdAsync(id);
-            var table = Selection.DataTable("FlightEmployee", flightEmployee);
+            var ticket = await ticketService.GetByIdAsync(id);
+            var table = Selection.DataTable("Ticket", ticket);
             AnsiConsole.Write(table);
         }
         catch (Exception ex)
@@ -153,16 +179,16 @@ public class FlightEmployeesMenu
     async Task DeleteAsync()
     {
         Console.Clear();
-        long id = AnsiConsole.Ask<long>("Enter FlightEmployee Id to delete: ");
+        long id = AnsiConsole.Ask<long>("Enter ticket Id to delete: ");
         while (id <= 0)
         {
             AnsiConsole.MarkupLine("[red]Was entered in the wrong format .Try again![/]");
-            id = AnsiConsole.Ask<long>("Enter FlightEmployee Id to delete: ");
+            id = AnsiConsole.Ask<long>("Enter ticket Id to delete: ");
         }
 
         try
         {
-            await flightEmployeeService.DeleteAsync(id);
+            await ticketService.DeleteAsync(id);
             AnsiConsole.Markup("[orange3]Succesful deleted[/]\n");
         }
         catch (Exception ex)
@@ -177,8 +203,8 @@ public class FlightEmployeesMenu
     async Task GetAllAsync()
     {
         Console.Clear();
-        var flightEmployees = await flightEmployeeService.GetAllAsync();
-        var table = Selection.DataTable("FlightEmployees", flightEmployees.ToArray());
+        var tickets = await ticketService.GetAllAsync();
+        var table = Selection.DataTable("Tickets", tickets.ToArray());
         AnsiConsole.Write(table);
         Console.WriteLine("Enter any keyword to continue");
         Console.ReadKey();

@@ -28,6 +28,9 @@ public class SignInMenu
     private readonly AircraftMenu aircraftMenu;
     private readonly FlightMenu flightMenu;
     private readonly FlightEmployeesMenu flightEmployeesMenu;
+    private readonly TicketMenu ticketMenu;
+    private readonly BookingMenu bookingMenu;
+    private readonly CustomerMenu customerMenu;
 
     private CustomerViewModel customer;
     public SignInMenu(EmployeeRepository employeeRepository, CustomerRepository customerRepository, AircraftRepository aircraftRepository, 
@@ -55,7 +58,9 @@ public class SignInMenu
         aircraftMenu = new AircraftMenu(aircraftService);
         flightMenu = new FlightMenu(flightService,aircraftService);
         flightEmployeesMenu = new FlightEmployeesMenu(flightEmployeeService,flightService,employeeService);
-
+        ticketMenu = new TicketMenu(ticketService, flightService);
+        bookingMenu = new BookingMenu(bookingService,ticketService,flightService);
+        customerMenu = new CustomerMenu(customerService);
     }
 
     public async Task SignInAsync()
@@ -85,17 +90,62 @@ public class SignInMenu
                     case "FlightEmployees":
                         await flightEmployeesMenu.DisplayAsync();
                         break;
-                    //case "Ticket":
-                    //    RentalConditions();
-                    //    break;
-                    //case "Users":
-                    //    RentalConditions();
-                    //    break;
+                    case "Ticket":
+                        await ticketMenu.DisplayAsync();
+                        break;
+                    case "Users":
+                        await customerMenu.GetAllAsync();
+                        break;
                     case "[red]Back[/]":
                         circle = false;
                         break;
                 }
             }
+        }else if(somebody == "user")
+        {
+            var options = new string[] { "Booking Ticket", "Return Ticket", "GetById", "GetAll", "MyAccount", "Deposit", "UpdateAccount", "Delete", "[red]Back[/]" };
+            var title = "-- UserMenu --";
+
+            while (circle)
+            {
+                AnsiConsole.Clear();
+                var selection = Selection.SelectionMenu(title, options);
+                switch (selection)
+                {
+                    case "Booking Ticket":
+                        await bookingMenu.BookingAsync(customer.Id);
+                        break;
+                    case "Return Ticket":
+                        await bookingMenu.ReturnTicketAsync(customer.Id);
+                        break;
+                    case "GetById":
+                        await bookingMenu.GetByIdAsync(customer.Id);
+                        break;
+                    case "GetAll":
+                        await bookingMenu.GetAllAsync(customer.Id);
+                        break;
+                    case "MyAccount":
+                        await customerMenu.DepositAsync(customer.Id);
+                        break;
+                    case "Deposit":
+                        await customerMenu.GetByIdAsync(customer.Id);
+                        break;
+                    case "UpdateAccount":
+                        await customerMenu.UpdateAsync(customer.Id);
+                        break;
+                    case "Delete":
+                        await customerMenu.DeleteAsync(customer.Id);
+                        circle = false;
+                        break;
+                    case "[red]Back[/]":
+                        circle = false;
+                        break;
+                }
+            }
+        }
+        else
+        {
+            circle = false;
         }
     }
 

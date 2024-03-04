@@ -1,8 +1,10 @@
 ﻿using AirportSystem.Domain.Entities.Aircraft;
+using AirportSystem.Domain.Entities.Booking;
 using AirportSystem.Domain.Entities.Customer;
 using AirportSystem.Domain.Entities.Employee;
 using AirportSystem.Domain.Entities.Flight;
 using AirportSystem.Domain.Entities.FlightEmployee;
+using AirportSystem.Domain.Entities.Ticket;
 using Spectre.Console;
 
 namespace AirportSystem.UI.Display;
@@ -104,6 +106,20 @@ public static class Selection
         return table;
     }
 
+    public static Table DataTable(string title, params BookingViewModel[] bookings)
+    {
+        var table = new Table();
+
+        table.AddColumn("[slateblue1]Id[/]");
+        table.AddColumn("[slateblue1]CustomerId[/]");
+        table.AddColumn("[slateblue1]TicketId[/]");
+
+        foreach (var booking in bookings)
+            table.AddRow(booking.Id.ToString(), booking.CustomerId.ToString(), booking.TicketId.ToString());
+
+        return table;
+    }
+
     public static Table DataTable(string title, params FlightViewModel[] flights)
     {
         var table = new Table();
@@ -118,6 +134,22 @@ public static class Selection
         foreach (var flight in flights)
             table.AddRow(flight.Id.ToString(), flight.AircraftId.ToString(), flight.PlaceOfDeparture, flight.PlaceOfArrival,
                 flight.DepartureTime.ToString(), flight.ArrivalTime.ToString());
+
+        return table;
+    }
+
+    public static Table DataTable(string title, params TicketViewModel[] tickets)
+    {
+        var table = new Table();
+
+        table.AddColumn("[slateblue1]Id[/]");
+        table.AddColumn("[slateblue1]FlightId[/]");
+        table.AddColumn("[slateblue1]TicketNumber[/]");
+        table.AddColumn("[slateblue1]TicketClass[/]");
+        table.AddColumn("[slateblue1]Price[/]");
+
+        foreach (var ticket in tickets)
+            table.AddRow(ticket.Id.ToString(), ticket.FlightId.ToString(),ticket.TicketNumber.ToString(), ticket.TicketClass.ToString(), ticket.Price.ToString());
 
         return table;
     }
