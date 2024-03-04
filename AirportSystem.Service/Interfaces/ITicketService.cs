@@ -7,7 +7,7 @@ public interface ITicketService
 {
     Task<TicketViewModel> CreateAsync(TicketCreationModel model);
     Task<TicketViewModel> UpdateAsync(long id, TicketUpdateModel model, bool isUsesDeleted);
-    Task<IEnumerable<TicketViewModel>> GetAllAsync();
+    Task<IEnumerable<TicketViewModel>> GetAllAsync(long ? flightId);
     Task<TicketViewModel> GetByIdAsync(long id);
     Task<bool> DeleteAsync(long id);
 }

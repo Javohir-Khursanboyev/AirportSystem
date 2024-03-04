@@ -42,9 +42,16 @@ public class TicketService : ITicketService
         return true;
     }
 
-    public async Task<IEnumerable<TicketViewModel>> GetAllAsync()
+    public async Task<IEnumerable<TicketViewModel>> GetAllAsync(long ? flightId = null)
     {
         var tickets = await ticketRepository.GetAllAsync();
+        if (flightId is not null)
+        {
+            var result = tickets.Where(t => !t.IsDeleted && t.FlightId == flightId);
+            if (!result.Any())
+                throw new Exception($"There are no tickets on this flight");
+        }
+
         return tickets.Where(t => !t.IsDeleted).MapTo<TicketViewModel> ();
     }
 

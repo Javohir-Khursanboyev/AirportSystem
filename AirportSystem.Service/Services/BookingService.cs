@@ -36,10 +36,10 @@ public class BookingService : IBookingService
         return createdBooking.MapTo<BookingViewModel> ();
     }
 
-    public async Task<bool> DeleteAsync(long id)
+    public async Task<bool> DeleteAsync(long id, long customerId)
     {
         var bookings = await bookingRepository.GetAllAsync();
-        var existBooking = bookings.FirstOrDefault(b => b.Id == id && !b.IsDeleted)
+        var existBooking = bookings.FirstOrDefault(b => b.Id == id && !b.IsDeleted && b.CustomerId == customerId)
             ?? throw new Exception($"This booking is not found With this id {id}");
 
         await bookingRepository.DeleteAsync(id);
@@ -49,16 +49,19 @@ public class BookingService : IBookingService
         return true;
     }
 
-    public async Task<IEnumerable<BookingViewModel>> GetAllAsync()
+    public async Task<IEnumerable<BookingViewModel>> GetAllAsync(long? customerId = null)
     {
         var bookings = await bookingRepository.GetAllAsync();
-        return bookings.Where(b => !b.IsDeleted).MapTo<BookingViewModel> ();
+        if(customerId is not null) 
+            return bookings.Where(b => !b.IsDeleted && b.CustomerId == customerId).MapTo<BookingViewModel>();
+
+        return bookings.Where(b => !b.IsDeleted).MapTo<BookingViewModel>();
     }
 
-    public async Task<BookingViewModel> GetByIdAsync(long id)
+    public async Task<BookingViewModel> GetByIdAsync(long id, long customerId)
     {
         var bookings = await bookingRepository.GetAllAsync();
-        var existBooking = bookings.FirstOrDefault(b => b.Id == id && !b.IsDeleted)
+        var existBooking = bookings.FirstOrDefault(b => b.Id == id && !b.IsDeleted && b.CustomerId == customerId)
             ?? throw new Exception($"This booking is not found With this id {id}");
 
         return existBooking.MapTo<BookingViewModel> ();
