@@ -66,6 +66,18 @@ public class CustomerService : ICustomerService
         return existCustomer.MapTo<CustomerViewModel> ();
     }
 
+    public async Task<CustomerViewModel> SecurityCheckAsync(string email, string password)
+    {
+        var customers = await customerRepository.GetAllAsync();
+        var existCustomer = customers.FirstOrDefault(c => c.Email == email && !c.IsDeleted)
+            ?? throw new Exception($"This user is not found With this email : {email}");
+
+        if (existCustomer.Password != password)
+            throw new Exception($"Password is incorrect");
+
+        return existCustomer.MapTo<CustomerViewModel> ();
+    }
+
     public async Task<CustomerViewModel> UpdateAsync(long id, CustomerUpdateModel model, bool isUsesDeleted = false)
     {
         var customers = await customerRepository.GetAllAsync();

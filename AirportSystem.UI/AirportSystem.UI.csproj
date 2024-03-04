@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Spectre.Console" Version="0.48.1-preview.0.32" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AirportSystem.Data\AirportSystem.Data.csproj" />
     <ProjectReference Include="..\AirportSystem.Service\AirportSystem.Service.csproj" />
   </ItemGroup>

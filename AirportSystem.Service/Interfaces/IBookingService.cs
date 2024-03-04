@@ -6,7 +6,7 @@ namespace AirportSystem.Service.Interfaces;
 public interface IBookingService
 {
     Task<BookingViewModel> CreateAsync(BookingCreationModel model);
-    Task<bool> DeleteAsync(long id);
-    Task<IEnumerable<BookingViewModel>> GetAllAsync();
-    Task<BookingViewModel> GetByIdAsync(long id);
+    Task<bool> DeleteAsync(long id, long customerId);
+    Task<IEnumerable<BookingViewModel>> GetAllAsync(long ? customerId);
+    Task<BookingViewModel> GetByIdAsync(long id, long customerId);
 }

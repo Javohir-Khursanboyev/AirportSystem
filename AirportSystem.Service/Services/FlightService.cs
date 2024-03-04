@@ -29,6 +29,9 @@ public class FlightService : IFlightService
 
             throw new Exception($"This flight is already exist");
         }
+        if(model.PlaceOfDeparture == model.PlaceOfArrival)
+            throw new Exception($"The place of arrival and departure is the same");
+
         var createdFlight = await flightRepository.InsertAsync(model.MapTo<Flights>());
         return createdFlight.MapTo<FlightViewModel> ();
     }
@@ -43,9 +46,17 @@ public class FlightService : IFlightService
         return true;
     }
 
-    public async Task<IEnumerable<FlightViewModel>> GetAllAsync()
+    public async Task<IEnumerable<FlightViewModel>> GetAllAsync(DateTime ? date = null)
     {
         var flights = await flightRepository.GetAllAsync();
+        if(date is not null)
+        {
+            var thisDayFlights = flights.Where(f => !f.IsDeleted && f.DepartureTime.Date == date.Value.Date).MapTo<FlightViewModel> ();
+            if (!thisDayFlights.Any())
+                throw new Exception("There are no flights on this day");
+
+            return thisDayFlights;
+        }
         return flights.Where(f => !f.IsDeleted).MapTo<FlightViewModel> ();
     }
 
