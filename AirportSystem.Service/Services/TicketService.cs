@@ -20,16 +20,16 @@ public class TicketService : ITicketService
 
         var tickets = await ticketRepository.GetAllAsync();
         var existTicket = tickets.FirstOrDefault(t => t.TicketNumber == model.TicketNumber);
-        if(existTicket != null)
+        if (existTicket != null)
         {
-            if(existTicket.IsDeleted)
+            if (existTicket.IsDeleted)
                 return await UpdateAsync(existTicket.Id, model.MapTo<TicketUpdateModel>(), true);
 
             throw new Exception($"This ticket is already exist With this ticketNumber : {model.TicketNumber}");
         }
 
         var createdTicket = await ticketRepository.InsertAsync(model.MapTo<Tickets>());
-        return createdTicket.MapTo<TicketViewModel> ();
+        return createdTicket.MapTo<TicketViewModel>();
     }
 
     public async Task<bool> DeleteAsync(long id)
@@ -42,7 +42,7 @@ public class TicketService : ITicketService
         return true;
     }
 
-    public async Task<IEnumerable<TicketViewModel>> GetAllAsync(long ? flightId = null)
+    public async Task<IEnumerable<TicketViewModel>> GetAllAsync(long? flightId = null)
     {
         var tickets = await ticketRepository.GetAllAsync();
         if (flightId is not null)
@@ -52,7 +52,7 @@ public class TicketService : ITicketService
                 throw new Exception($"There are no tickets on this flight");
         }
 
-        return tickets.Where(t => !t.IsDeleted).MapTo<TicketViewModel> ();
+        return tickets.Where(t => !t.IsDeleted).MapTo<TicketViewModel>();
     }
 
     public async Task<TicketViewModel> GetByIdAsync(long id)
@@ -61,7 +61,7 @@ public class TicketService : ITicketService
         var existTicket = tickets.FirstOrDefault(t => t.Id == id && !t.IsDeleted)
             ?? throw new Exception($"This ticket is not found With this id : {id}");
 
-        return existTicket.MapTo<TicketViewModel> ();
+        return existTicket.MapTo<TicketViewModel>();
     }
 
     public async Task<TicketViewModel> UpdateAsync(long id, TicketUpdateModel model, bool isUsesDeleted = false)
@@ -76,7 +76,7 @@ public class TicketService : ITicketService
             existTicket = tickets.FirstOrDefault(t => t.Id == id && !t.IsDeleted)
                 ?? throw new Exception($"This ticket is not found With this id : {id}");
 
-        var updatedTicket = ticketRepository.UpdateAsync(id, model.MapTo<Tickets> ());
-        return updatedTicket.MapTo<TicketViewModel> ();
+        var updatedTicket = ticketRepository.UpdateAsync(id, model.MapTo<Tickets>());
+        return updatedTicket.MapTo<TicketViewModel>();
     }
 }
