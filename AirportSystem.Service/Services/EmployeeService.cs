@@ -19,7 +19,7 @@ public class EmployeeService : IEmployeeService
         if (existEmployee is not null)
         {
             if (existEmployee.IsDeleted)
-                await UpdateAsync(existEmployee.Id, model.MapTo<EmployeeUpdateModel>(), true);
+                return await UpdateAsync(existEmployee.Id, model.MapTo<EmployeeUpdateModel>(), true);
 
             throw new Exception($"This employee is already exist With this email : {model.Email}");
         }

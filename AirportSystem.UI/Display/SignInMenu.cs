@@ -125,10 +125,10 @@ public class SignInMenu
                         await bookingMenu.GetAllAsync(customer.Id);
                         break;
                     case "MyAccount":
-                        await customerMenu.DepositAsync(customer.Id);
+                        await customerMenu.GetByIdAsync(customer.Id);
                         break;
                     case "Deposit":
-                        await customerMenu.GetByIdAsync(customer.Id);
+                        await customerMenu.DepositAsync(customer.Id);
                         break;
                     case "UpdateAccount":
                         await customerMenu.UpdateAsync(customer.Id);

@@ -25,7 +25,7 @@ public class FlightService : IFlightService
         if (existFlight != null)
         {
             if(existFlight.IsDeleted)
-                await UpdateAsync(existFlight.Id, model.MapTo<FlightUpdateModel> (), true);
+                return await UpdateAsync(existFlight.Id, model.MapTo<FlightUpdateModel>(), true);
 
             throw new Exception($"This flight is already exist");
         }

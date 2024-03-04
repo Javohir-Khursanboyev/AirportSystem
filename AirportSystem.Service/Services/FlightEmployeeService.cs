@@ -26,7 +26,7 @@ public class FlightEmployeeService : IFlightEmployeeService
         if(existFlightEmployee is not null)
         {
             if(existFlightEmployee.IsDeleted)
-                await UpdateAsync(existFlightEmployee.Id, model.MapTo<FlightEmployeeUpdateModel> (), true);
+                return await UpdateAsync(existFlightEmployee.Id, model.MapTo<FlightEmployeeUpdateModel>(), true);
 
             throw new Exception($"This flightEmployee is already exist");
         }

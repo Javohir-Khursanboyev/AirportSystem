@@ -20,8 +20,8 @@ public class AircraftService : IAircraftService
         if(existAircraft != null)
         {
             if(existAircraft.IsDeleted) 
-                await UpdateAsync(existAircraft.Id, model.MapTo<AircraftUpdateModel> () ,true);
-
+                return await UpdateAsync(existAircraft.Id, model.MapTo<AircraftUpdateModel> () ,true);
+            
             throw new Exception($"This aircraft is already exist With this name : {model.Name}");
         }
 
