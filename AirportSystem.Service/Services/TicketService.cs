@@ -23,7 +23,7 @@ public class TicketService : ITicketService
         if(existTicket != null)
         {
             if(existTicket.IsDeleted)
-                await UpdateAsync(existTicket.Id, model.MapTo<TicketUpdateModel> (), true);
+                return await UpdateAsync(existTicket.Id, model.MapTo<TicketUpdateModel>(), true);
 
             throw new Exception($"This ticket is already exist With this ticketNumber : {model.TicketNumber}");
         }

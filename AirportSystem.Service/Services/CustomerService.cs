@@ -21,7 +21,7 @@ public class CustomerService : ICustomerService
         if(existCustomer != null)
         {
             if(existCustomer.IsDeleted)
-                await UpdateAsync(existCustomer.Id, model.MapTo<CustomerUpdateModel> (), true);
+                return await UpdateAsync(existCustomer.Id, model.MapTo<CustomerUpdateModel> (), true);
 
             throw new Exception($"This customer is already exist With this email : {model.Email}");
         }
