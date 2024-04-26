@@ -10,6 +10,4 @@ public class Airport : Auditable
     public string Country { get; set; }
     public string IATACode { get; set; }
     public string ICAOCode { get; set; }
-
-    public IEnumerable<Flight> Flights { get; set; }
 }
