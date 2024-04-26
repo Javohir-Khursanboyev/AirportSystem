@@ -11,6 +11,5 @@ public class Airport : Auditable
     public string IATACode { get; set; }
     public string ICAOCode { get; set; }
 
-    public IEnumerable<Flight> StartFlights { get; set; }
-    public IEnumerable<Flight> EndFlights { get; set; }
+    public IEnumerable<Flight> Flights { get; set; }
 }
