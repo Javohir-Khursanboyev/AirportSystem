@@ -1,12 +1,8 @@
 ﻿using AirportSystem.Domain.Commons;
-using AirportSystem.Domain.Entities.Assets;
-using AirportSystem.Domain.Entities.Positions;
 using AirportSystem.Domain.Entities.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AirportSystem.Domain.Entities.Assets;
+using AirportSystem.Domain.Entities.Flights;
+using AirportSystem.Domain.Entities.Positions;
 
 namespace AirportSystem.Domain.Entities.Employees;
 
@@ -18,4 +14,6 @@ public class Employee : Auditable
     public Position Position { get; set; }
     public long? AssetId { get; set; }
     public Asset Asset { get; set; }
+
+    public IEnumerable<FlightEmployee> FlightEmployees { get; set; }
 }

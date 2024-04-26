@@ -1,4 +1,5 @@
 ﻿using AirportSystem.Domain.Commons;
+using AirportSystem.Domain.Entities.Flights;
 using AirportSystem.Domain.Entities.TicketStatus;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,6 @@ public class RateTickets : Auditable
     public long TickedStatusId { get; set; }
     public TicketStatus.TicketStatus TickedStatus { get; set; }
     public long FlightId { get; set; }
-    
+    public Flight Flight { get; set; }
     public Decimal Price { get; set; }
 }
