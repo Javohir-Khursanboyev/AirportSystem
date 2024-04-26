@@ -16,6 +16,6 @@ public class Employee : Auditable
     public User User { get; set; }
     public long PositionId { get; set; }
     public Position Position { get; set; }
-    public long AssetId { get; set; }
+    public long? AssetId { get; set; }
     public Asset Asset { get; set; }
 }
