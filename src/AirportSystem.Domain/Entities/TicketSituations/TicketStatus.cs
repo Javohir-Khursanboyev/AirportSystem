@@ -7,5 +7,4 @@ public class TicketStatus : Auditable
 {
     public string Name { get; set; }
     
-    public IEnumerable<RateTicket> RateTickets { get; set; }
 }
