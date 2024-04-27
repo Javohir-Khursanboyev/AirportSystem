@@ -1,11 +1,6 @@
 ﻿using AirportSystem.Domain.Commons;
 using AirportSystem.Domain.Entities.Bookings;
 using AirportSystem.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AirportSystem.Domain.Entities.Payments;
 

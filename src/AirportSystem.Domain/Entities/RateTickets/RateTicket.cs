@@ -1,18 +1,13 @@
 ﻿using AirportSystem.Domain.Commons;
 using AirportSystem.Domain.Entities.Flights;
-using AirportSystem.Domain.Entities.TicketStatus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AirportSystem.Domain.Entities.TicketSituations;
 
 namespace AirportSystem.Domain.Entities.RateTickets;
 
-public class RateTickets : Auditable
+public class RateTicket : Auditable
 {
     public long TickedStatusId { get; set; }
-    public TicketStatus.TicketStatus TickedStatus { get; set; }
+    public TicketStatus TicketStatus { get; set; }
     public long FlightId { get; set; }
     public Flight Flight { get; set; }
     public Decimal Price { get; set; }
