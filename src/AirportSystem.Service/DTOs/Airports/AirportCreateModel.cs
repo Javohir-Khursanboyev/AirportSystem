@@ -1,8 +1,6 @@
-﻿using AirportSystem.Domain.Commons;
+﻿namespace AirportSystem.Service.DTOs.Airports;
 
-namespace AirportSystem.Domain.Entities.Airports;
-
-public class Airport : Auditable
+public class AirportCreateModel
 {
     public string Name { get; set; }
     public string City { get; set; }
