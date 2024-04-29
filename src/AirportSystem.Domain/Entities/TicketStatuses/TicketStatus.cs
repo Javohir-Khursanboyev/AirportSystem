@@ -5,6 +5,5 @@ namespace AirportSystem.Domain.Entities.TicketSituations;
 
 public class TicketStatus : Auditable
 {
-    public string Name { get; set; }
-    
+    public string Name { get; set; }  
 }
