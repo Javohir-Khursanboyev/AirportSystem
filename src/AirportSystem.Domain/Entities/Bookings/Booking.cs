@@ -1,7 +1,7 @@
-﻿using AirportSystem.Domain.Commons;
-using AirportSystem.Domain.Entities.Tickets;
+﻿using AirportSystem.Domain.Enums;
+using AirportSystem.Domain.Commons;
 using AirportSystem.Domain.Entities.Users;
-using AirportSystem.Domain.Enums;
+using AirportSystem.Domain.Entities.Tickets;
 
 namespace AirportSystem.Domain.Entities.Bookings;
 
