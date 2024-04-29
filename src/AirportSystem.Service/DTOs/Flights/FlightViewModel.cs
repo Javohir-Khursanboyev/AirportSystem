@@ -6,6 +6,7 @@ namespace AirportSystem.Service.DTOs.Flights;
 
 public class FlightViewModel
 {
+    public long Id { get; set; }
     public DateTime DepartureTime { get; set; }
     public DateTime ArrivalTime { get; set; }
     public AirportViewModel DepartureAirport { get; set; }
