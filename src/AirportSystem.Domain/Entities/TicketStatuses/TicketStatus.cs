@@ -1,7 +1,6 @@
 ﻿using AirportSystem.Domain.Commons;
-using AirportSystem.Domain.Entities.RateTickets;
 
-namespace AirportSystem.Domain.Entities.TicketSituations;
+namespace AirportSystem.Domain.Entities.TicketStatuses;
 
 public class TicketStatus : Auditable
 {

@@ -3,6 +3,6 @@
 public class TicketCreateModel
 {
     public string SeatNumber { get; set; }
-    public long RateTicketsId { get; set; }
+    public long RateTicketId { get; set; }
     public bool IsSold { get; set; }
 }
