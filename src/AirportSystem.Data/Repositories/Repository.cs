@@ -22,7 +22,6 @@ public class Repository<T> : IRepository<T> where T : Auditable
     public async ValueTask<T> DeleteAsync(T entity)
     {
         entity.IsDeleted = true;
-        entity.DeletedAt = DateTime.UtcNow;
         set.Update(entity);
         return await Task.FromResult(entity);
     }
@@ -34,18 +33,23 @@ public class Repository<T> : IRepository<T> where T : Auditable
 
     public async ValueTask<T> UpdateAsync(T entity)
     {
-        entity.UpdatedAt = DateTime.UtcNow;
         set.Update(entity);
         return await Task.FromResult(entity);
     }
 
-    public async ValueTask<T> SelectAsync(Expression<Func<T, bool>> expression, string[] includes = null)
+    public async ValueTask<T> SelectAsync(
+        Expression<Func<T, bool>> expression,
+        string[] includes = null,
+        bool isTracked = true)
     {
         var query = set.Where(expression);
 
         if(includes is not null)
             foreach (var include in includes)
                 query = query.Include(include);
+
+        if (!isTracked)
+            query = query.AsNoTracking();
 
         return await query.FirstOrDefaultAsync();
     }
