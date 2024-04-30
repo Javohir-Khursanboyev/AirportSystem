@@ -1,7 +1,9 @@
-﻿namespace AirportSystem.Service.DTOs.Assets;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace AirportSystem.Service.DTOs.Assets;
 
 public class AssetCreateModel
 {
-    public string Name { get; set; }
-    public string Path { get; set; }
+    public IFormFile File { get; set; }
+    public FileType FileType { get; set; }
 }
