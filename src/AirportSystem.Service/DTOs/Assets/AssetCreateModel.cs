@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using AirportSystem.Domain.Enums;
 
 namespace AirportSystem.Service.DTOs.Assets;
 
