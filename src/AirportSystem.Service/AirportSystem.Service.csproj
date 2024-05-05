@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AirportSystem.Data\AirportSystem.Data.csproj" />
     <ProjectReference Include="..\AirportSystem.Domain\AirportSystem.Domain.csproj" />
   </ItemGroup>
 
