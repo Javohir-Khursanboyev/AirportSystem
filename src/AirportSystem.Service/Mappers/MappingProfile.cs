@@ -8,7 +8,6 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<Asset, AssetCreateModel>().ReverseMap();
         CreateMap<Asset,AssetViewModel>().ReverseMap();
     }
 }
