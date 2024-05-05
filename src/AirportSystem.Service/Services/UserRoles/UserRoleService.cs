@@ -4,7 +4,6 @@ using AirportSystem.Service.Configurations;
 using AirportSystem.Service.DTOs.UserRoles;
 using AirportSystem.Service.Exceptions;
 using AirportSystem.Service.Extensions;
-using AirportSystem.Service.Helper;
 using AutoMapper;
 using System.Data;
 
@@ -19,7 +18,7 @@ public class UserRoleService(IUnitOfWork unitOfWork, IMapper mapper) : IUserRole
             throw new AlreadyExistException($"Role already exists this Name: {model.Name}");
 
         var existRole = mapper.Map<UserRole>(model);
-        existRole.CreatedByUserId = HttpContextHelper.UserId;
+        existRole.Create();
         var createdUserRole = await unitOfWork.UserRoles.InsertAsync(existRole);
         await unitOfWork.SaveAsync();
         return mapper.Map<UserRolesViewModel>(createdUserRole);
@@ -38,10 +37,11 @@ public class UserRoleService(IUnitOfWork unitOfWork, IMapper mapper) : IUserRole
     public async ValueTask<IEnumerable<UserRolesViewModel>> GetAllAsync(PaginationParams @params, Filter filter, string search = null)
     {
         var userRoles = unitOfWork.UserRoles.SelectAsQueryable(isTracked : false).OrderBy(filter);
-        if(string.IsNullOrEmpty(search))
-            userRoles = userRoles.Where(role => role.Name.Contains(search, StringComparison.OrdinalIgnoreCase));
+        if(!string.IsNullOrEmpty(search))
+            userRoles = userRoles.Where(role => role.Name.ToLower().Contains(search.ToLower()));
 
-        return await Task.FromResult(mapper.Map<IEnumerable<UserRolesViewModel>>(userRoles.ToPaginateAsQueryable(@params)));
+        var paginateRoles =await Task.Run(() => userRoles.ToPaginateAsQueryable(@params).ToList());
+        return  mapper.Map<IEnumerable<UserRolesViewModel>>(paginateRoles);
     }
 
     public async ValueTask<UserRolesViewModel> GetByIdAsync(long id)
@@ -64,9 +64,8 @@ public class UserRoleService(IUnitOfWork unitOfWork, IMapper mapper) : IUserRole
 
         existRole.Id = id;
         existRole.Name = model.Name;
-        existRole.UpdatedAt = DateTime.UtcNow;
-        existRole.UpdatedByUserId = HttpContextHelper.UserId;
-        await unitOfWork.UserRoles.UpdateAsync(role);
+        existRole.Update();
+        await unitOfWork.UserRoles.UpdateAsync(existRole);
         await unitOfWork.SaveAsync();
         return mapper.Map<UserRolesViewModel>(existRole);
     }
