@@ -93,8 +93,7 @@ public class MappingProfile : Profile
         CreateMap<AircraftCreateModel, Aircraft>().ReverseMap();
         CreateMap<AircraftUpdateModel, Aircraft>().ReverseMap();
         CreateMap<Aircraft, AircraftViewModel>().ReverseMap();
-    
-        CreateMap<AssetCreateModel, Asset>().ReverseMap();
+
         CreateMap<Asset, AssetViewModel>().ReverseMap();
     }
 }
