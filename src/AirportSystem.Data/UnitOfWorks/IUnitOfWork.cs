@@ -9,7 +9,7 @@ using AirportSystem.Domain.Entities.Payments;
 using AirportSystem.Domain.Entities.Positions;
 using AirportSystem.Domain.Entities.RateTickets;
 using AirportSystem.Domain.Entities.Tickets;
-using AirportSystem.Domain.Entities.TicketSituations;
+using AirportSystem.Domain.Entities.TicketStatuses;
 using AirportSystem.Domain.Entities.Users;
 
 namespace AirportSystem.Data.UnitOfWorks;
