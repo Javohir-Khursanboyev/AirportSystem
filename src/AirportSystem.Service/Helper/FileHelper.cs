@@ -5,20 +5,26 @@ namespace AirportSystem.Service.Helper;
 
 public static class FileHelper
 {
-    public static async ValueTask<(string Path, string Name)> CreateFileAsync(IFormFile formFile, FileType fileType)
+    public static async Task<(string Path, string Name)> CreateFileAsync(IFormFile file, FileType type)
     {
-        var directoryPath = Path.Combine(EnvironmentHelper.WebRootPath, fileType.ToString());
-        if(!Directory.Exists(directoryPath))
+        var directoryPath = Path.Combine(EnvironmentHelper.WebRootPath, type.ToString());
+        if (!Directory.Exists(directoryPath))
             Directory.CreateDirectory(directoryPath);
 
-        var fullPath = Path.Combine(directoryPath, formFile.FileName);
+        var fileName = MakeFileName(file.FileName);
+        var fullPath = Path.Combine(directoryPath, fileName);
 
-        var fileStream = new FileStream(fullPath, FileMode.OpenOrCreate);
-        var memoryStream = new MemoryStream();
-        formFile.CopyTo(memoryStream);
-        var bytes = memoryStream.ToArray();
-        await fileStream.WriteAsync(bytes);
+        var stream = File.Create(fullPath);
+        await file.CopyToAsync(stream);
+        stream.Close();
 
-        return (fullPath, formFile.FileName);
+        return (fullPath, fileName);
+    }
+
+    private static string MakeFileName(string fileName)
+    {
+        string fileExtension = Path.GetExtension(fileName);
+        string guid = Guid.NewGuid().ToString();
+        return $"{guid}{fileName}";
     }
 }
