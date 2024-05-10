@@ -5,6 +5,7 @@ using AirportSystem.Service.DTOs.UserRoles;
 using AirportSystem.Service.Exceptions;
 using AirportSystem.Service.Extensions;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using System.Data;
 
 namespace AirportSystem.Service.Services.UserRoles;
@@ -40,7 +41,7 @@ public class UserRoleService(IUnitOfWork unitOfWork, IMapper mapper) : IUserRole
         if(!string.IsNullOrEmpty(search))
             userRoles = userRoles.Where(role => role.Name.ToLower().Contains(search.ToLower()));
 
-        var paginateRoles =await Task.Run(() => userRoles.ToPaginateAsQueryable(@params).ToList());
+        var paginateRoles =await userRoles.ToPaginateAsQueryable(@params).ToListAsync();
         return  mapper.Map<IEnumerable<UserRolesViewModel>>(paginateRoles);
     }
 
@@ -54,19 +55,14 @@ public class UserRoleService(IUnitOfWork unitOfWork, IMapper mapper) : IUserRole
 
     public async ValueTask<UserRolesViewModel> UpdateAsync(long id, UserRolesUpdateModel model)
     {
-        var role = await unitOfWork.UserRoles.SelectAsync(r => r.Id == id)
+        var existRole = await unitOfWork.UserRoles.SelectAsync(r => r.Id == id)
             ?? throw new NotFoundException($"Role is not fount this ID = {id}");
 
-        var existRole = await unitOfWork.UserRoles.SelectAsync(r => r.Name.ToLower() ==  model.Name.ToLower());
-        if (existRole is not null)
+        var alreadyRole = await unitOfWork.UserRoles.SelectAsync(r => r.Name.ToLower() ==  model.Name.ToLower());
+        if (alreadyRole is not null)
             throw new AlreadyExistException($"Role already exists this Name: {model.Name}");
 
-
-        existRole.Id = id;
-        existRole.Name = model.Name;
-        existRole.Update();
-        await unitOfWork.UserRoles.UpdateAsync(existRole);
-        await unitOfWork.SaveAsync();
+        mapper.Map(model, existRole);
         return mapper.Map<UserRolesViewModel>(existRole);
     }
 }
